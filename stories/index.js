@@ -69,7 +69,7 @@ storiesOf("DayList", module)
   .add("Wednesday", () => (
     <DayList days={days} value={"Wednesday"} onChange={action("setDay")} />
   ));
-  
+
 const interviewer = {
   id: 1,
   name: "Sylvia Palmer",
@@ -123,12 +123,12 @@ storiesOf("InterviewerList", module)
   .add("Selected", () => (
     <InterviewerList
       interviewers={interviewers}
-      interviewer={3}
+      value={3}
     />
   ))
   .add("Clickable", () => (
     <InterviewerList
       interviewers={interviewers}
-      setInterviewer={action("setInterviewer")}
+      onChange={action("setInterviewer")}
     />
   ));
