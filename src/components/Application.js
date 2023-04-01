@@ -64,7 +64,7 @@ const appointments = {
 const schedule = Object.values(appointments).map((appointment) => {
   return (
     <Appointment
-      key={appointment.key}
+      key={appointment.id}
       {...appointment}
     />
   );
