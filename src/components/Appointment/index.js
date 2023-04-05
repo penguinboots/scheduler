@@ -18,14 +18,13 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
 
+  // creates interview object, calls bookInterview
   function save(name, interviewer) {
     const interview = {
       student: name,
       interviewer
     };
-
     transition(SAVING);
-
     props.bookInterview(props.id, interview)
     .then(() => transition(SHOW));
   }
