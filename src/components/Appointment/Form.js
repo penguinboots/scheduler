@@ -6,11 +6,13 @@ export default function Form(props) {
   const [student, setStudent] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
 
+  // clear selections
   const reset = () => {
     setStudent("");
     setInterviewer(null);
   }
 
+  // perform onCancel function (exits form)
   const cancel = () => {
     reset();
     props.onCancel();
