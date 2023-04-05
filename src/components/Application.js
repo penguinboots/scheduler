@@ -60,19 +60,6 @@ export default function Application(props) {
       .then(setState({ ...state, appointments }))
   }
 
-  function cancelInterview(id) {
-    const appointment = {
-      ...state.appointments[id],
-      interview: null
-    }
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    }
-    return axios.delete(`/api/appointments/${id}`, appointment)
-      .then(setState({ ...state, appointments }))
-  }
-
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const interviewers = getInterviewersForDay(state, state.day);
   // Appointment component for each appointment in given day
