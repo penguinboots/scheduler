@@ -28,6 +28,32 @@ export default function useApplicationData() {
       })
   }, [])
 
+  // takes name of day, returns matching index in state.days
+  function dayToIndex(day) {
+    const daysOfWeek = {
+      Monday: 0,
+      Tuesday: 1,
+      Wednesday: 2,
+      Thursday: 3,
+      Friday: 4
+    }
+    return daysOfWeek[day];
+  }
+
+  // make new days object with updated # spots (add num)
+  function updateSpots(num) {
+    const dayIndex = dayToIndex(state.day);
+
+    const newDay = {
+      ...state.days[dayIndex],
+      spots: state.days[dayIndex].spots + num
+    }
+    const days = [...state.days];
+    days[dayIndex] = newDay;
+
+    return days;
+  }
+
   // takes interview object and adds it to appointments state at specified time (id)
   // makes HTTP request, updates local state
   function bookInterview(id, interview) {
@@ -39,8 +65,11 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     }
+
+    let days = updateSpots(-1);
+
     return axios.put(`/api/appointments/${id}`, appointment)
-      .then(() => setState({ ...state, appointments }))
+      .then(() => setState({ ...state, appointments, days }))
   }
 
   // replaces interview with null given id
@@ -54,8 +83,11 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     }
+
+    let days = updateSpots(1);
+
     return axios.delete(`/api/appointments/${id}`)
-      .then(() => setState({ ...state, appointments }))
+      .then(() => setState({ ...state, appointments, days }))
   }
 
   return { state, setDay, bookInterview, cancelInterview };
