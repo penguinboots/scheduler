@@ -34,14 +34,14 @@ export default function Appointment(props) {
     transition(SAVING);
     props.bookInterview(props.id, interview)
       .then(() => transition(SHOW))
-      .catch(() => transition(ERROR_SAVE));
+      .catch(() => transition(ERROR_SAVE, true));
   }
 
   function remove() {
-    transition(DELETING);
+    transition(DELETING, true);
     props.cancelInterview(props.id)
       .then(() => transition(EMPTY))
-      .catch(() => transition(ERROR_DELETE));
+      .catch(() => transition(ERROR_DELETE, true));
   }
 
   return (
@@ -83,10 +83,12 @@ export default function Appointment(props) {
       {mode === ERROR_SAVE &&
         <Error
           message="Save could not be completed."
+          onClose={back}
         />}
       {mode === ERROR_DELETE &&
         <Error
           message="Delete could not be completed."
+          onClose={back}
         />}
     </article>
   );
