@@ -104,9 +104,6 @@ describe("Form", () => {
     expect(queryByText(/student name cannot be blank/i)).toBeNull();
 
     expect(getByPlaceholderText("Enter Student Name")).toHaveValue("");
-
-    // below boilerplate test was removed (onCancel function differs from prescribed)
-    // expect(onCancel).toHaveBeenCalledTimes(1);
   });
 
   it("calls onCancel when cancel button pressed on empty form", () => {
