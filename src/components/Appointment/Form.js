@@ -13,8 +13,14 @@ export default function Form(props) {
     setInterviewer(null);
   }
 
-  // perform onCancel function (exits form)
+  // if fields have selections or error messages displayed, return to empty form
+  // if form is empty, perform onCancel function (exits form)
   const cancel = () => {
+    if (student || interviewer || error) {
+      reset();
+      setError("");
+      return;
+    }
     reset();
     props.onCancel();
   }
@@ -25,7 +31,7 @@ export default function Form(props) {
       setError("Student name cannot be blank");
       return;
     }
-    if (!interviewer) {
+    if (interviewer === null) {
       setError("Please select an interviewer");
       return;
     }
@@ -39,9 +45,9 @@ export default function Form(props) {
         <form autoComplete="off" onSubmit={event => event.preventDefault()}>
           <input
             className="appointment__create-input text--semi-bold"
-            name="name"
+            name={props.student}
             type="text"
-            defaultValue={props.student}
+            value={student}
             placeholder='Enter Student Name'
             onChange={(event) => setStudent(event.target.value)}
             data-testid="student-name-input"
