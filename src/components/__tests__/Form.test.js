@@ -82,7 +82,7 @@ describe("Form", () => {
     expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1);
   });
 
-  it("calls onCancel and resets the input field", () => {
+  it("resets the input field when Cancel is clicked on form with values or error", () => {
     const onCancel = jest.fn();
     const { getByText, getByPlaceholderText, queryByText } = render(
       <Form
@@ -107,5 +107,19 @@ describe("Form", () => {
 
     // below boilerplate test was removed (onCancel function differs from prescribed)
     // expect(onCancel).toHaveBeenCalledTimes(1);
+  });
+
+  it("calls onCancel when cancel button pressed on empty form", () => {
+    const onCancel = jest.fn();
+    const { getByText } = render(
+      <Form
+        interviewers={interviewers}
+        onSave={jest.fn()}
+        onCancel={onCancel}
+      />
+    );
+
+    fireEvent.click(getByText("Cancel"));
+    expect(onCancel).toHaveBeenCalledTimes(1);
   });
 });
