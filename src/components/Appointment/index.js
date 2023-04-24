@@ -32,7 +32,19 @@ export default function Appointment(props) {
       interviewer
     };
     transition(SAVING);
-    props.bookInterview(props.id, interview)
+    props.bookInterview(props.id, interview, true)
+      .then(() => transition(SHOW))
+      .catch(() => transition(ERROR_SAVE, true));
+  }
+
+  // creates interview object, calls bookInterview without changing spots remaining
+  function saveEdit(student, interviewer) {
+    const interview = {
+      student: student,
+      interviewer
+    };
+    transition(SAVING);
+    props.bookInterview(props.id, interview, false)
       .then(() => transition(SHOW))
       .catch(() => transition(ERROR_SAVE, true));
   }
@@ -78,7 +90,7 @@ export default function Appointment(props) {
           interviewer={props.interview.interviewer.id}
           interviewers={props.interviewers}
           onCancel={back}
-          onSave={save}
+          onSave={saveEdit}
         />}
       {mode === ERROR_SAVE &&
         <Error

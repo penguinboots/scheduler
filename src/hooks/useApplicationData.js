@@ -56,7 +56,7 @@ export default function useApplicationData() {
 
   // takes interview object and adds it to appointments state at specified time (id)
   // makes HTTP request, updates local state
-  function bookInterview(id, interview) {
+  function bookInterview(id, interview, updating) {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -65,12 +65,16 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     }
+    let days = updateSpots(0);
 
-    let days = updateSpots(-1);
+    if (updating) {
+      days = updateSpots(-1);
+    }
 
     return axios.put(`/api/appointments/${id}`, appointment)
       .then(() => setState({ ...state, appointments, days }))
   }
+  
 
   // replaces interview with null given id
   // makes HTTP request, updates local state
