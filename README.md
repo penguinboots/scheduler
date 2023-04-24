@@ -19,12 +19,14 @@ Tests were performed using Storybook, Jest, and Cypress.
 
 ### Making new appointment
 ![new appointment](docs/new-appt.gif)
+* Spots remaining update
 
 ### Editing appointment
 ![edit appointment](docs/edit-appt.gif)
 
 ### Deleting appointment
 ![delete appointment](docs/delete-appt.gif)
+* Spots remaining update
 
 ## Project Stack
 Front-end: React, Axios, JSX, HTML, Javascript
