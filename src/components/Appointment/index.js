@@ -26,9 +26,9 @@ export default function Appointment(props) {
   );
 
   // creates interview object, calls bookInterview
-  function save(name, interviewer) {
+  function save(student, interviewer) {
     const interview = {
-      student: name,
+      student: student,
       interviewer
     };
     transition(SAVING);
