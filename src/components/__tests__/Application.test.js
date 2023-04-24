@@ -4,6 +4,8 @@ import { render, cleanup, waitForElement, fireEvent, prettyDOM, getByText, getAl
 
 import Application from "components/Application";
 
+import axios from "axios";
+
 afterEach(cleanup);
 
 describe("Application", () => {
@@ -78,7 +80,7 @@ describe("Application", () => {
 
     fireEvent.click(getByAltText(appointment, "Tori Malcolm"));
     fireEvent.click(getByText(appointment, "Save"));
-    
+
     expect(getByText(appointment, "Saving...")).toBeInTheDocument();
 
     await waitForElement(() => getByText(appointment, "Archie Cohen"));
@@ -89,4 +91,42 @@ describe("Application", () => {
 
     expect(getByText(day, "1 spot remaining")).toBeInTheDocument();
   })
+
+  it("shows the save error when failing to save an appointment", async () => {
+    axios.put.mockRejectedValueOnce();
+    const { container } = render(<Application />);
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+    const appointment = getAllByTestId(container, "appointment")
+      .find(appointment => queryByText(appointment, "Archie Cohen"));
+
+    fireEvent.click(queryByAltText(appointment, "Edit"));
+    fireEvent.change(getByPlaceholderText(appointment, /enter student name/i), {
+      target: { value: "Lydia Miller-Jones" }
+    });
+    fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
+
+    fireEvent.click(getByText(appointment, "Save"));
+
+    await waitForElement(() => getByText(appointment, "Error"));
+    expect(getByText(appointment, "Error")).toBeInTheDocument();
+
+    fireEvent.click(queryByAltText(appointment, "Close"));
+
+    expect(getByText(appointment, "Save")).toBeInTheDocument();
+
+    fireEvent.click(queryByText(appointment, "Cancel"))
+
+    expect(getByText(container, "Archie Cohen")).toBeInTheDocument();
+
+    const day = getAllByTestId(container, "day").find(day =>
+      queryByText(day, "Monday")
+    );
+
+    expect(getByText(day, "1 spot remaining")).toBeInTheDocument();
+  });
+
+  it("shows the delete error when failing to delete an existing appointment", () => {
+    axios.put.mockRejectedValueOnce();
+  });
 })
