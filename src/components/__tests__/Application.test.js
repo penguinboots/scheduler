@@ -116,6 +116,7 @@ describe("Application", () => {
     expect(getByText(appointment, "Save")).toBeInTheDocument();
 
     fireEvent.click(queryByText(appointment, "Cancel"))
+    fireEvent.click(queryByText(appointment, "Cancel"))
 
     expect(getByText(container, "Archie Cohen")).toBeInTheDocument();
 
@@ -126,7 +127,30 @@ describe("Application", () => {
     expect(getByText(day, "1 spot remaining")).toBeInTheDocument();
   });
 
-  it("shows the delete error when failing to delete an existing appointment", () => {
-    axios.put.mockRejectedValueOnce();
+  it("shows the delete error when failing to delete an existing appointment", async () => {
+    axios.delete.mockRejectedValueOnce();
+    const { container } = render(<Application />);
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+    const appointment = getAllByTestId(container, "appointment").find(
+      appointment => queryByText(appointment, "Archie Cohen")
+    );
+    fireEvent.click(queryByAltText(appointment, "Delete"))
+
+    expect(getByText(appointment, "Are you sure you would like to delete?")).toBeInTheDocument();
+
+    fireEvent.click(queryByText(appointment, "Confirm"))
+
+    expect(getByText(appointment, "Deleting...")).toBeInTheDocument();
+
+    await waitForElement(() => getByText(appointment, "Error"));
+    expect(getByText(appointment, "Error")).toBeInTheDocument();
+
+    const day = getAllByTestId(container, "day").find(day =>
+      queryByText(day, "Monday")
+    );
+
+    expect(getByText(day, "1 spot remaining")).toBeInTheDocument();
+  
   });
 })
