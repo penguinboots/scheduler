@@ -1,7 +1,7 @@
 # Interview Scheduler
 
 ## Project Description
-Interview Scheduler is a single page application React applicaiton that allows users to book and cancel interviews. Data is persisted by the API server using a PostgreSQL database.
+Interview Scheduler is a single page application React application that allows users to book and cancel interviews. Data is persisted by the API server using a PostgreSQL database.
 
 Tests were performed using Storybook, Jest, and Cypress.
 
